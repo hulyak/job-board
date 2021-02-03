@@ -4,11 +4,13 @@ import Header from './components/Header';
 import { Grid, ThemeProvider } from '@material-ui/core';
 import SearchBar from './components/SearchBar';
 import JobCard from './components/Job/JobCard';
+import NewJobModal from './components/Job/NewJobModal';
 
 const App = () => {
   return (
     <ThemeProvider theme={theme}>
       <Header />
+      <NewJobModal />
       <Grid container justify='center'>
         <Grid item xs={10}>
           <SearchBar />
