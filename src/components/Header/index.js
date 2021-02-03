@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Grid, Typography, Button } from '@material-ui/core';
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default (props) => (
   <Box bgcolor='secondary.main' color='white' py={10}>
     <Grid container justify='center'>
