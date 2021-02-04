@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Grid, Typography, Button, makeStyles } from '@material-ui/core';
+import { formatDistance } from 'date-fns';
 
-const skills = ['Javascript', 'ReactJS', 'NodeJS'];
 const useStyles = makeStyles((theme) => ({
   wrapper: {
     border: '1px solid #e8e8e8',
@@ -34,15 +34,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const JobCard = () => {
+const JobCard = ({ title, company, salary, location, type, skills, postedOn }) => {
   const classes = useStyles();
   return (
     <Box className={classes.wrapper} p={2}>
-      <Grid container alignItems='center'>
+      <Grid container alignItems='center' mb={2}>
         <Grid item xs>
-          <Typography variant='subtitle1'>Frontend Dev</Typography>
+          <Typography variant='subtitle1'>{title}</Typography>
           <Typography variant='subtitle1' className={classes.companyName}>
-            Google
+            {company}
           </Typography>
         </Grid>
         <Grid item container xs>
@@ -54,9 +54,7 @@ const JobCard = () => {
         </Grid>
         <Grid item container direction='column' alignItems='flex-end' xs>
           <Grid item>
-            <Typography variant='caption'>
-              2577 min | Full Time | Remote
-            </Typography>
+            <Typography variant='caption'>{`${salary} | ${location} | ${type} | ${formatDistance(Date.now(), postedOn)} ago `}</Typography>
           </Grid>
           <Grid item>
             <Box mt={2}>
