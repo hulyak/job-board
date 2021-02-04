@@ -34,8 +34,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const JobCard = ({ title, company, salary, location, type, skills, postedOn }) => {
+const JobCard = ({
+  title,
+  company,
+  salary,
+  location,
+  type,
+  skills,
+  postedOn,
+  open,
+}) => {
   const classes = useStyles();
+
   return (
     <Box className={classes.wrapper} p={2}>
       <Grid container alignItems='center' mb={2}>
@@ -54,11 +64,16 @@ const JobCard = ({ title, company, salary, location, type, skills, postedOn }) =
         </Grid>
         <Grid item container direction='column' alignItems='flex-end' xs>
           <Grid item>
-            <Typography variant='caption'>{`${salary} | ${location} | ${type} | ${formatDistance(Date.now(), postedOn)} ago `}</Typography>
+            <Typography variant='caption'>{`${salary} | ${location} | ${type} | ${formatDistance(
+              Date.now(),
+              postedOn
+            )} ago `}</Typography>
           </Grid>
           <Grid item>
             <Box mt={2}>
-              <Button variant='outlined'>Check</Button>
+              <Button onClick={open} variant='outlined'>
+                Check
+              </Button>
             </Box>
           </Grid>
         </Grid>

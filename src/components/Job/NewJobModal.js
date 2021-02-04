@@ -15,7 +15,6 @@ import {
   IconButton,
   CircularProgress,
 } from '@material-ui/core';
-
 import { Close as CloseIcon } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
@@ -41,21 +40,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const NewJobModal = (props) => {
+const initialState = {
+  company: '',
+  companyUrl: '',
+  location: 'Remote',
+  salary: '',
+  title: '',
+  type: 'Full Time',
+  applyAt: '',
+  description: '',
+  skills: [],
+};
+const NewJobModal = ({ openModel, PostJob, closeJobModal }) => {
   const classes = useStyles();
-  const [jobDetails, setJobDetails] = useState({
-    company: '',
-    companyUrl: '',
-    location: 'Remote',
-    salary: '',
-    title: '',
-    type: 'Full Time',
-    applyAt: '',
-    description: '',
-    skills: [],
-  });
 
-  const [jobDetails, setJobDetails] = useState(initState);
+  const [jobDetails, setJobDetails] = useState(initialState);
+  const [loading, setLoading] = useState(false);
 
   console.log(jobDetails);
 
@@ -83,11 +83,26 @@ const NewJobModal = (props) => {
   };
 
   const handleSubmit = async () => {
+    for (let field in jobDetails) {
+      if (typeof jobDetails[field] === 'string' && !jobDetails[field]) {
+        alert('Fill all the Required Fields');
+        return;
+      }
+    }
+    if (!jobDetails.skills.length) {
+      alert('Fill all the Required Fields');
+      return;
+    }
     setLoading(true);
-    await props.postJob(jobDetails);
-    setLoading(false);
+    await PostJob(jobDetails);
+    closeModal();
   };
 
+  const closeModal = () => {
+    setJobDetails(initialState);
+    setLoading(false);
+    closeJobModal();
+  };
   const skills = [
     'JavaScript',
     'React',
@@ -99,11 +114,11 @@ const NewJobModal = (props) => {
   ];
 
   return (
-    <Dialog open={true} fullWidth>
+    <Dialog open={openModel} fullWidth>
       <DialogTitle>
         <Box display='flex' justifyContent='space-between' alignItems='center'>
           Post a Job
-          <IconButton>
+          <IconButton onClick={closeModal}>
             <CloseIcon />
           </IconButton>
         </Box>
@@ -115,7 +130,6 @@ const NewJobModal = (props) => {
               onChange={handleChange}
               name='title'
               value={jobDetails.title}
-              onChange={(e) => setJobDetails(e.target.value)}
               autoComplete='off'
               placeholder='Job Title *'
               disableUnderline
@@ -229,9 +243,12 @@ const NewJobModal = (props) => {
             disabledElevation
             color='primary'
             disabled={loading}
-
           >
-            {loading ? CircularProgress color="secondary" size={22} /> }
+            {loading ? (
+              <CircularProgress color='secondary' size={22} />
+            ) : (
+              'Post Job'
+            )}
             Post Job
           </Button>
         </Box>
