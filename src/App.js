@@ -6,7 +6,7 @@ import Header from './components/Header';
 import SearchBar from './components/SearchBar';
 import JobCard from './components/Job/JobCard';
 import NewJobModal from './components/Job/NewJobModal';
-import { firestore } from './config';
+import { firestore, app } from './config';
 
 const App = () => {
   const [jobs, setJobs] = useState([]);
@@ -28,6 +28,17 @@ const App = () => {
     // console.log(tempJobs)
     setJobs(tempJobs);
     setLoading(false);
+  };
+  // save in the firestore as a new document
+  const postJob = async (jobDetails) => {
+    await firestore
+      .collection('jobs')
+      // bring the date from firestore timestamp
+      .add({
+        ...jobDetails,
+        postedOn: app.firestore.fieldValue.serverTimestamp(),
+      });
+    fetchJobs();
   };
 
   useEffect(() => {
